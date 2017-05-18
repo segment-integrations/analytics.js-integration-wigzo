@@ -14,7 +14,9 @@ var Wigzo = require('../lib/')
 describe('Wigzo', function () {
   var analytics
   var wigzo
-  var options = {}
+  var options = {
+	  orgToken:'a30c8b5f-7514-4d23-a927-6e4d338920ec'
+	  }
 
   beforeEach(function () {
     analytics = new Analytics()
