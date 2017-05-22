@@ -15,8 +15,8 @@ describe('Wigzo', function () {
   var analytics
   var wigzo
   var options = {
-	  orgToken:'a30c8b5f-7514-4d23-a927-6e4d338920ec'
-	  }
+	  orgToken: 'a30c8b5f-7514-4d23-a927-6e4d338920ec'
+	}
 
   beforeEach(function () {
     analytics = new Analytics()
@@ -33,21 +33,20 @@ describe('Wigzo', function () {
     Sandbox()
   })
 
-  describe('Constructing the integration', function () {
-    it('should have the right settings', function () {
-      analytics.compare(Wigzo, Integration('Wigzo')
-        .readyOnInitialize()
-        .global('wigzo')
-        .option('licenseCode', ''));
-    })
+  it('should have the right settings', function () {
+    analytics.compare(Wigzo, Integration('Wigzo')
+      .global('wigzo')
+      .option('orgToken', ''));
+  })
+
+  describe('before loading', function () {
+    beforeEach(function() {
+      analytics.stub(wigzo, 'load');
+      analytics.initialize();
+      analytics.page();
+    });
 
     describe('#initialize', function () {
-      it('should call this.ready() with valid options', function () {
-        analytics.stub(wigzo, 'ready')
-        wigzo.initialize()
-        analytics.called(wigzo.ready)
-      })
-
       it('should create window.wigzo', function() {
         analytics.assert(window.wigzo);
       });
@@ -64,7 +63,7 @@ describe('Wigzo', function () {
         analytics.assert(window.wigzo.page);
       });
     })
-  })
+  });
 
   describe('loading', function() {
     it('should load', function(done) {
@@ -104,7 +103,7 @@ describe('Wigzo', function () {
 
     describe('#identify', function() {
       beforeEach(function() {
-        analytics.stub(window.wigzo.identify, 'identify');
+        analytics.stub(window.wigzo, 'identify');
       });
 
       it('should send an id', function() {

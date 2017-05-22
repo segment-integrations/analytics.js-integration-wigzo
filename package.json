@@ -42,7 +42,9 @@
     "watchify": "^3.9.0"
   },
   "dependencies": {
-    "@segment/analytics.js-integration": "^3.2.0"
+    "@segment/analytics.js-integration": "^3.2.0",
+    "reject": "0.0.1",
+    "use-https": "^0.1.1"
   },
   "standard": {
     "env": [
