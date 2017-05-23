@@ -1,6 +1,7 @@
-'use strict'
+/* eslint-env node */
+'use strict';
 
-var baseConfig = require('./karma.conf')
+var baseConfig = require('./karma.conf');
 var customLaunchers = {
   sl_chrome_latest: {
     base: 'SauceLabs',
@@ -50,13 +51,13 @@ var customLaunchers = {
     base: 'SauceLabs',
     browserName: 'microsoftedge'
   }
-}
+};
 
-module.exports = function (config) {
-  baseConfig(config)
+module.exports = function(config) {
+  baseConfig(config);
 
   if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {
-    throw new Error('SAUCE_USERNAME and SAUCE_ACCESS_KEY environment variables are required but are missing')
+    throw new Error('SAUCE_USERNAME and SAUCE_ACCESS_KEY environment variables are required but are missing');
   }
 
   config.set({
@@ -84,5 +85,5 @@ module.exports = function (config) {
         { type: 'lcov' }
       ]
     }
-  })
-}
+  });
+};
