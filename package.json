@@ -1,6 +1,6 @@
 {
   "name": "@segment/analytics.js-integration-wigzo",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "The wigzo analytics.js integration.",
   "main": "lib/index.js",
   "directories": {
