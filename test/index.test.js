@@ -61,9 +61,9 @@ describe('Wigzo', function() {
 
   describe('after loading', function() {
     beforeEach(function(done) {
-      analytics.once('ready', done);
       analytics.initialize();
       analytics.page();
+      analytics.once('ready', done);
     });
 
     it('should create window.wigzo.identify', function() {
