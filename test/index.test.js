@@ -194,6 +194,23 @@ describe('Wigzo', function() {
         analytics.didNotCall(window.wigzo.track, 'addtocart');
       });
 
+      it('should send wishlist', function() {
+        var eventData = {
+          product_id: '507f1f77bcf86cd799439011'
+        };
+        analytics.track('Product Added to Wishlist', eventData);
+        analytics.called(window.wigzo.track, 'wishlist', eventData.product_id);
+      });
+
+      it('should not send wishlist without product_id', function() {
+        var eventData = {
+          name: 'Monopoly: 3rd Edition',
+          brand: 'Hasbro'
+        };
+        analytics.track('Product Added to Wishlist', eventData);
+        analytics.didNotCall(window.wigzo.track, 'wishlist');
+      });
+
       it('should send search', function() {
         var eventData = {
           query: 'blue hotpants'
