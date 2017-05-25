@@ -61,9 +61,9 @@ describe('Wigzo', function() {
 
   describe('after loading', function() {
     beforeEach(function(done) {
+      analytics.once('ready', done);
       analytics.initialize();
       analytics.page();
-      analytics.once('ready', done);
     });
 
     it('should create window.wigzo.identify', function() {
@@ -84,20 +84,32 @@ describe('Wigzo', function() {
       });
 
       it('should call index', function() {
-        analytics.page();
-        analytics.called(window.wigzo.index);
-      });
+        var productData = {
+          product_id: '40',
+          canonicalUrl : 'https://snoopy.wigzopush.com/index.php?route=product/product&amp;product_id=40',
+          imageUrl : 'https://snoopy.wigzopush.com/image/cache/catalog/demo/iphone_1-228x228.jpg',
+          category: 'Mobile Phones',
+          description: 'iPhone is a revolutionary new mobile phone that allows you',
+          language: 'en',
+          name: 'iPhone',
+          brand: 'Apply',
+          price: 18.99,
+          currency: 'usd'
+        };
 
-      it('should pass page name and default properties via page', function() {
-        analytics.page('Name');
-        analytics.called(window.wigzo.index, {
-          title: document.title,
-          url: window.location.href,
-          name: 'Name',
-          path: window.location.pathname,
-          referrer: document.referrer,
-          search: window.location.search
-        });
+        var wigzoProduct = {
+          productId: productData.product_id,
+          title: productData.name,
+          price : productData.currency + ' ' + productData.price,
+          category: productData.category,
+          image : productData.imageUrl,
+          canonicalUrl : productData.canonicalUrl,
+          description: productData.description,
+          language: productData.language
+        };
+
+        analytics.track('Product Clicked', productData);
+        analytics.called(window.wigzo.index, wigzoProduct);
       });
     });
 
@@ -117,12 +129,15 @@ describe('Wigzo', function() {
           email: 'ashish@wigzo.com',
           phone: '1234567890'
         };
-        analytics.identify(user);
-        analytics.called(window.wigzo.identify, {
+
+        var wigzoUser = {
           fullName: user.name,
           email: user.email,
           phone: user.phone
-        });
+        };
+        
+        analytics.identify(user);
+        analytics.called(window.wigzo.identify, wigzoUser);
       });
 
       it('should send an id and traits', function() {
@@ -170,6 +185,15 @@ describe('Wigzo', function() {
         analytics.called(window.wigzo.track, 'addtocart', eventData.product_id);
       });
 
+      it('should not send addtocart without product_id', function() {
+        var eventData = {
+          name: 'Monopoly: 3rd Edition',
+          brand: 'Hasbro'
+        };
+        analytics.track('Product Added', eventData);
+        analytics.didNotCall(window.wigzo.track, 'addtocart');
+      });
+
       it('should send search', function() {
         var eventData = {
           query: 'blue hotpants'
@@ -177,6 +201,15 @@ describe('Wigzo', function() {
 
         analytics.track('Products Searched', eventData);
         analytics.called(window.wigzo.track, 'search', eventData.query);
+      });
+
+      it('should not send search without query', function() {
+        var eventData = {
+          text: 'blue hotpants'
+        };
+
+        analytics.track('Products Searched', eventData);
+        analytics.didNotCall(window.wigzo.track, 'search');
       });
 
       it('should send product removed', function() {
@@ -187,6 +220,16 @@ describe('Wigzo', function() {
 
         analytics.track('Product Removed', eventData);
         analytics.called(window.wigzo.track, 'removedfromcart', eventData.product_id);
+      });
+
+      it('should not send product removed without product_id', function() {
+        var eventData = {
+          name: 'Monopoly: 3rd Edition',
+          sku: 'G-32'
+        };
+
+        analytics.track('Product Removed', eventData);
+        analytics.didNotCall(window.wigzo.track, 'removedfromcart');
       });
 
       it('should send product reviewed', function() {
@@ -214,6 +257,16 @@ describe('Wigzo', function() {
         analytics.called(window.wigzo.track, 'checkoutstarted', productIdList);
       });
 
+      it('should not send checkout started without product_id', function() {
+        var eventData = {
+          order_id: '50314b8e9bcf000000000000',
+          affiliation: 'Google Store'
+        };
+
+        analytics.track('Checkout Started', eventData);
+        analytics.didNotCall(window.wigzo.track, 'checkoutstarted');
+      });
+
       it('should send order completed', function() {
         var productIdList = ['507f1f77bcf86cd799439011', '505bd76785ebb509fc183733'];
         var eventData = {
@@ -225,6 +278,16 @@ describe('Wigzo', function() {
 
         analytics.track('Order Completed', eventData);
         analytics.called(window.wigzo.track, 'buy', productIdList);
+      });
+
+      it('should not send order completed without product_id', function() {
+        var eventData = {
+          order_id: '50314b8e9bcf000000000000',
+          affiliation: 'Google Store'
+        };
+
+        analytics.track('Order Completed', eventData);
+        analytics.didNotCall(window.wigzo.track, 'buy');
       });
     });
   });
