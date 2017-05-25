@@ -161,6 +161,71 @@ describe('Wigzo', function() {
         analytics.track('event', eventData);
         analytics.called(window.wigzo.track, 'event', eventData);
       });
+
+      it('should send addtocart', function() {
+        var eventData = {
+          product_id: '507f1f77bcf86cd799439011'
+        };
+        analytics.track('Product Added', eventData);
+        analytics.called(window.wigzo.track, 'addtocart', eventData.product_id);
+      });
+
+      it('should send search', function() {
+        var eventData = {
+          query: 'blue hotpants'
+        };
+
+        analytics.track('Products Searched', eventData);
+        analytics.called(window.wigzo.track, 'search', eventData.query);
+      });
+
+      it('should send product removed', function() {
+        var eventData = {
+          product_id: '507f1f77bcf86cd799439011',
+          sku: 'G-32'
+        };
+
+        analytics.track('Product Removed', eventData);
+        analytics.called(window.wigzo.track, 'removedfromcart', eventData.product_id);
+      });
+
+      it('should send product reviewed', function() {
+        var eventData = {
+          product_id: '507f1f77bcf86cd799439011',
+          review_id: 'kdfjrj39fj39jf3',
+          review_body: 'I love this product',
+          rating: '5'
+        };
+
+        analytics.track('Product Reviewed', eventData);
+        analytics.called(window.wigzo.track, 'review', eventData);
+      });
+
+      it('should send checkout started', function() {
+        var productIdList = ['507f1f77bcf86cd799439011', '505bd76785ebb509fc183733'];
+        var eventData = {
+          products: [
+            { product_id: productIdList[0] },
+            { product_id: productIdList[1] }
+          ]
+        };
+
+        analytics.track('Checkout Started', eventData);
+        analytics.called(window.wigzo.track, 'checkoutstarted', productIdList);
+      });
+
+      it('should send order completed', function() {
+        var productIdList = ['507f1f77bcf86cd799439011', '505bd76785ebb509fc183733'];
+        var eventData = {
+          products: [
+            { product_id: productIdList[0] },
+            { product_id: productIdList[1] }
+          ]
+        };
+
+        analytics.track('Order Completed', eventData);
+        analytics.called(window.wigzo.track, 'buy', productIdList);
+      });
     });
   });
 });
