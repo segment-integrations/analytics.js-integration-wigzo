@@ -131,7 +131,7 @@ describe('Wigzo', function() {
         var options = {
           Wigzo: { // make sure this is capitalized
             imageUrl : 'https://snoopy.wigzopush.com/image/cache/catalog/demo/iphone_1-228x228.jpg',
-            // canonicalUrl : 'https://snoopy.wigzopush.com/index.php?route=product/product&amp;product_id=40',
+            canonicalUrl : 'https://snoopy.wigzopush.com/index.php?route=product/product&amp;product_id=40',
             description: 'iPhone is a revolutionary new mobile phone that allows you',
             language: 'en'
           }
