@@ -86,15 +86,20 @@ describe('Wigzo', function() {
       it('should call index', function() {
         var productData = {
           product_id: '40',
-          canonicalUrl : 'https://snoopy.wigzopush.com/index.php?route=product/product&amp;product_id=40',
-          imageUrl : 'https://snoopy.wigzopush.com/image/cache/catalog/demo/iphone_1-228x228.jpg',
           category: 'Mobile Phones',
-          description: 'iPhone is a revolutionary new mobile phone that allows you',
-          language: 'en',
           name: 'iPhone',
           brand: 'Apply',
           price: 18.99,
           currency: 'usd'
+        };
+
+        var options = {
+          Wigzo: { // make sure this is capitalized
+            imageUrl : 'https://snoopy.wigzopush.com/image/cache/catalog/demo/iphone_1-228x228.jpg',
+            canonicalUrl : 'https://snoopy.wigzopush.com/index.php?route=product/product&amp;product_id=40',
+            description: 'iPhone is a revolutionary new mobile phone that allows you',
+            language: 'en'
+          }
         };
 
         var wigzoProduct = {
@@ -102,28 +107,34 @@ describe('Wigzo', function() {
           title: productData.name,
           price : productData.currency + ' ' + productData.price,
           category: productData.category,
-          image : productData.imageUrl,
-          canonicalUrl : productData.canonicalUrl,
-          description: productData.description,
-          language: productData.language
+          image : options.Wigzo.imageUrl,
+          canonicalUrl : options.Wigzo.canonicalUrl,
+          description: options.Wigzo.description,
+          language: options.Wigzo.language
         };
 
-        analytics.track('Product Clicked', productData);
+
+        analytics.track('Product Clicked', productData, options);
         analytics.called(window.wigzo.index, wigzoProduct);
       });
 
       it('should call index', function() {
         var productData = {
           product_id: '40',
-          canonicalUrl : 'https://snoopy.wigzopush.com/index.php?route=product/product&amp;product_id=40',
-          imageUrl : 'https://snoopy.wigzopush.com/image/cache/catalog/demo/iphone_1-228x228.jpg',
           category: 'Mobile Phones',
-          description: 'iPhone is a revolutionary new mobile phone that allows you',
-          language: 'en',
           name: 'iPhone',
           brand: 'Apply',
           price: 18.99,
           currency: 'usd'
+        };
+
+        var options = {
+          Wigzo: { // make sure this is capitalized
+            imageUrl : 'https://snoopy.wigzopush.com/image/cache/catalog/demo/iphone_1-228x228.jpg',
+            // canonicalUrl : 'https://snoopy.wigzopush.com/index.php?route=product/product&amp;product_id=40',
+            description: 'iPhone is a revolutionary new mobile phone that allows you',
+            language: 'en'
+          }
         };
 
         var wigzoProduct = {
@@ -131,13 +142,13 @@ describe('Wigzo', function() {
           title: productData.name,
           price : productData.currency + ' ' + productData.price,
           category: productData.category,
-          image : productData.imageUrl,
-          canonicalUrl : productData.canonicalUrl,
-          description: productData.description,
-          language: productData.language
+          image : options.Wigzo.imageUrl,
+          canonicalUrl : options.Wigzo.canonicalUrl,
+          description: options.Wigzo.description,
+          language: options.Wigzo.language
         };
 
-        analytics.track('Product Viewed', productData);
+        analytics.track('Product Viewed', productData, options);
         analytics.called(window.wigzo.index, wigzoProduct);
       });
     });
