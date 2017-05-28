@@ -61,9 +61,9 @@ describe('Wigzo', function() {
 
   describe('after loading', function() {
     beforeEach(function(done) {
+      analytics.once('ready', done);
       analytics.initialize();
       analytics.page();
-      analytics.once('ready', done);
     });
 
     it('should create window.wigzo.identify', function() {
@@ -78,12 +78,13 @@ describe('Wigzo', function() {
       analytics.assert(window.wigzo.index);
     });
 
-    describe('#index', function() {
+    describe('#ecommerce', function() {
       beforeEach(function() {
         analytics.stub(window.wigzo, 'index');
+        analytics.stub(window.wigzo, 'track');
       });
 
-      it('should call index', function() {
+      it('product clicked should call index', function() {
         var productData = {
           product_id: '40',
           category: 'Mobile Phones',
@@ -118,7 +119,7 @@ describe('Wigzo', function() {
         analytics.called(window.wigzo.index, wigzoProduct);
       });
 
-      it('should call index', function() {
+      it('product viewed should call index and track', function() {
         var productData = {
           product_id: '40',
           category: 'Mobile Phones',
@@ -150,75 +151,10 @@ describe('Wigzo', function() {
 
         analytics.track('Product Viewed', productData, options);
         analytics.called(window.wigzo.index, wigzoProduct);
-      });
-    });
-
-    describe('#identify', function() {
-      beforeEach(function() {
-        analytics.stub(window.wigzo, 'identify');
+        analytics.called(window.wigzo.track, 'view', wigzoProduct);
       });
 
-      it('should send an id', function() {
-        analytics.identify('user-id');
-        analytics.equal(window.wigzo.USER_IDENTIFIER, 'user-id');
-      });
-
-      it('should send traits', function() {
-        var user = {
-          name: 'Test Name',
-          email: 'ashish@wigzo.com',
-          phone: '1234567890'
-        };
-
-        var wigzoUser = {
-          fullName: user.name,
-          email: user.email,
-          phone: user.phone
-        };
-
-        analytics.identify(user);
-        analytics.called(window.wigzo.identify, wigzoUser);
-      });
-
-      it('should send an id and traits', function() {
-        var user = {
-          name: 'Test Name',
-          email: 'ashish@wigzo.com',
-          phone: '1234567890'
-        };
-        var id = '507f191e810c19729de860ea';
-
-        analytics.identify(id, user);
-        analytics.equal(window.wigzo.USER_IDENTIFIER, id);
-        analytics.called(window.wigzo.identify,{
-          fullName: user.name,
-          email: user.email,
-          phone: user.phone
-        });
-      });
-    });
-
-    describe('#track', function() {
-      beforeEach(function() {
-        analytics.stub(window.wigzo, 'track');
-      });
-
-      it('should send an event', function() {
-        analytics.track('event');
-        analytics.called(window.wigzo.track, 'event', {});
-      });
-
-      it('should send an event and properties', function() {
-        var eventData = {
-          property1 : 'test1',
-          property2 : 'test2'
-        };
-
-        analytics.track('event', eventData);
-        analytics.called(window.wigzo.track, 'event', eventData);
-      });
-
-      it('should send addtocart', function() {
+      it('should send Product Added', function() {
         var eventData = {
           product_id: '507f1f77bcf86cd799439011'
         };
@@ -234,7 +170,7 @@ describe('Wigzo', function() {
         analytics.called(window.wigzo.track, 'addtocart', eventData.product_id);
       });
 
-      it('should not send addtocart without product_id', function() {
+      it('should not send product added without product_id', function() {
         var eventData = {
           name: 'Monopoly: 3rd Edition',
           brand: 'Hasbro'
@@ -243,7 +179,7 @@ describe('Wigzo', function() {
         analytics.didNotCall(window.wigzo.track, 'addtocart');
       });
 
-      it('should send wishlist', function() {
+      it('should send product added to wishlist', function() {
         var eventData = {
           product_id: '507f1f77bcf86cd799439011'
         };
@@ -260,7 +196,7 @@ describe('Wigzo', function() {
         analytics.didNotCall(window.wigzo.track, 'wishlist');
       });
 
-      it('should send search', function() {
+      it('should send products searched', function() {
         var eventData = {
           query: 'blue hotpants'
         };
@@ -269,7 +205,7 @@ describe('Wigzo', function() {
         analytics.called(window.wigzo.track, 'search', eventData.query);
       });
 
-      it('should not send search without query', function() {
+      it('should not send products searched without query', function() {
         var eventData = {
           text: 'blue hotpants'
         };
@@ -346,7 +282,7 @@ describe('Wigzo', function() {
         analytics.called(window.wigzo.track, 'buy', productIdList);
       });
 
-      it('should not send order completed without product_id', function() {
+      it('should not send order completed without product data', function() {
         var eventData = {
           order_id: '50314b8e9bcf000000000000',
           affiliation: 'Google Store'
@@ -354,6 +290,72 @@ describe('Wigzo', function() {
 
         analytics.track('Order Completed', eventData);
         analytics.didNotCall(window.wigzo.track, 'buy');
+      });
+    });
+
+    describe('#identify', function() {
+      beforeEach(function() {
+        analytics.stub(window.wigzo, 'identify');
+      });
+
+      it('should set userId to wigzo.USER_IDENTIFIER', function() {
+        analytics.identify('user-id');
+        analytics.equal(window.wigzo.USER_IDENTIFIER, 'user-id');
+      });
+
+      it('should send traits', function() {
+        var user = {
+          name: 'Test Name',
+          email: 'ashish@wigzo.com',
+          phone: '1234567890'
+        };
+
+        var wigzoUser = {
+          fullName: user.name,
+          email: user.email,
+          phone: user.phone
+        };
+
+        analytics.identify(user);
+        analytics.called(window.wigzo.identify, wigzoUser);
+      });
+
+      it('should set userId and send traits', function() {
+        var user = {
+          name: 'Test Name',
+          email: 'ashish@wigzo.com',
+          phone: '1234567890'
+        };
+        var id = '507f191e810c19729de860ea';
+
+        analytics.identify(id, user);
+        analytics.equal(window.wigzo.USER_IDENTIFIER, id);
+        analytics.called(window.wigzo.identify,{
+          fullName: user.name,
+          email: user.email,
+          phone: user.phone
+        });
+      });
+    });
+
+    describe('#track', function() {
+      beforeEach(function() {
+        analytics.stub(window.wigzo, 'track');
+      });
+
+      it('should send a custom event', function() {
+        analytics.track('event');
+        analytics.called(window.wigzo.track, 'event', {});
+      });
+
+      it('should send an event and properties', function() {
+        var eventData = {
+          property1 : 'test1',
+          property2 : 'test2'
+        };
+
+        analytics.track('event', eventData);
+        analytics.called(window.wigzo.track, 'event', eventData);
       });
     });
   });
