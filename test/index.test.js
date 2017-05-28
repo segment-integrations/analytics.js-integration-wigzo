@@ -160,7 +160,7 @@ describe('Wigzo', function() {
 
       it('should send an id', function() {
         analytics.identify('user-id');
-        analytics.called(window.wigzo.identify);
+        analytics.equal(window.wigzo.USER_IDENTIFIER, 'user-id');
       });
 
       it('should send traits', function() {
@@ -175,7 +175,7 @@ describe('Wigzo', function() {
           email: user.email,
           phone: user.phone
         };
-        
+
         analytics.identify(user);
         analytics.called(window.wigzo.identify, wigzoUser);
       });
@@ -189,6 +189,7 @@ describe('Wigzo', function() {
         var id = '507f191e810c19729de860ea';
 
         analytics.identify(id, user);
+        analytics.equal(window.wigzo.USER_IDENTIFIER, id);
         analytics.called(window.wigzo.identify,{
           fullName: user.name,
           email: user.email,
