@@ -116,6 +116,9 @@ describe('Wigzo', function() {
             canonicalUrl : 'https://snoopy.wigzopush.com/index.php?route=product/product&amp;product_id=40',
             description: 'iPhone is a revolutionary new mobile phone that allows you',
             language: 'en'
+          },
+          page: {
+            url: 'https://snoopy.wigzopush.com/index.php?route=product/product&amp;product_id=40'
           }
         };
 
@@ -125,11 +128,10 @@ describe('Wigzo', function() {
           price : productData.currency + ' ' + productData.price,
           category: productData.category,
           image : options.Wigzo.imageUrl,
-          canonicalUrl : options.Wigzo.canonicalUrl,
+          canonicalUrl : options.page.url,
           description: options.Wigzo.description,
           language: options.Wigzo.language
         };
-
 
         analytics.track('Product Clicked', productData, options);
         analytics.called(window.wigzo.index, wigzoProduct);
@@ -148,7 +150,6 @@ describe('Wigzo', function() {
         var options = {
           Wigzo: { // make sure this is capitalized
             imageUrl : 'https://snoopy.wigzopush.com/image/cache/catalog/demo/iphone_1-228x228.jpg',
-            canonicalUrl : 'https://snoopy.wigzopush.com/index.php?route=product/product&amp;product_id=40',
             description: 'iPhone is a revolutionary new mobile phone that allows you',
             language: 'en'
           },
