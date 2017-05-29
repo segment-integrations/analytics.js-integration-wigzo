@@ -43,7 +43,7 @@ describe('Wigzo', function() {
     beforeEach(function() {
       analytics.stub(wigzo, 'load');
       analytics.initialize();
-      analytics.page();
+      // analytics.page();
     });
 
     describe('#initialize', function() {
@@ -63,7 +63,7 @@ describe('Wigzo', function() {
     beforeEach(function(done) {
       analytics.once('ready', done);
       analytics.initialize();
-      analytics.page();
+      // analytics.page();
     });
 
     it('should create window.wigzo.identify', function() {
@@ -76,6 +76,17 @@ describe('Wigzo', function() {
 
     it('should create window.wigzo.index', function() {
       analytics.assert(window.wigzo.index);
+    });
+
+    describe('#page', function() {
+      beforeEach(function() {
+        analytics.stub(window.wigzo, 'track');
+      });
+
+      it('should pass page name and default properties via page', function() {
+        analytics.page('Name');
+        analytics.called(window.wigzo.track, 'view');
+      });
     });
 
     describe('#ecommerce', function() {
@@ -119,7 +130,7 @@ describe('Wigzo', function() {
         analytics.called(window.wigzo.index, wigzoProduct);
       });
 
-      it('product viewed should call index and track', function() {
+      it('product viewed should call index', function() {
         var productData = {
           product_id: '40',
           category: 'Mobile Phones',
@@ -151,7 +162,6 @@ describe('Wigzo', function() {
 
         analytics.track('Product Viewed', productData, options);
         analytics.called(window.wigzo.index, wigzoProduct);
-        analytics.called(window.wigzo.track, 'view', wigzoProduct);
       });
 
       it('should send Product Added', function() {
