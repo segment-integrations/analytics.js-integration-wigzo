@@ -1,4 +1,4 @@
-1.1.0 / 2017-05-28
+1.2.0 / 2017-05-28
 ==================
 
   * Bugs Fixed, pageUrl treated as canonicalUrl
