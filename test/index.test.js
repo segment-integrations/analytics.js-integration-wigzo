@@ -43,7 +43,6 @@ describe('Wigzo', function() {
     beforeEach(function() {
       analytics.stub(wigzo, 'load');
       analytics.initialize();
-      // analytics.page();
     });
 
     describe('#initialize', function() {
@@ -63,7 +62,6 @@ describe('Wigzo', function() {
     beforeEach(function(done) {
       analytics.once('ready', done);
       analytics.initialize();
-      // analytics.page();
     });
 
     it('should create window.wigzo.identify', function() {
