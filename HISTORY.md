@@ -1,4 +1,9 @@
-1.2.0 / 2017-05-28
+1.3.0 / 2017-10-13
+==================
+
+  * Updated with new js integration code
+  
+  1.2.0 / 2017-05-28
 ==================
 
   * Bugs Fixed, pageUrl treated as canonicalUrl
